@@ -1,0 +1,6 @@
+zhipuai>=1.0.7
+PyMuPDF>=1.22.5
+PyPDF2>=3.0.0
+argparse>=1.4.0
+logging>=0.5.1.2
+tqdm>=4.66.1
