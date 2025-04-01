@@ -1,182 +1,201 @@
-# 论文自动解读与翻译系统
+# 论文深入解读工具
 
-这是一个集成了论文翻译和深度解读功能的综合工具，旨在帮助研究人员和学生更高效地阅读和理解学术论文。系统由两个核心模块组成：PDFMathTranslate（论文翻译模块）和Analyzer（论文解读模块），能够处理包括图表和公式在内的复杂学术内容。
-
-## 系统概述
-
-本系统解决了学术论文阅读中的两大核心痛点：
-
-1. **语言障碍**：通过PDFMathTranslate模块，实现论文的高质量翻译，同时保留数学公式、图表和文档结构
-2. **内容理解**：通过Analyzer模块，利用智谱AI大模型对论文进行深入解读，提取关键信息并生成结构化分析报告
+这是一个使用智谱AI大模型对学术论文进行深入解读的工具。该工具可以自动分析PDF格式的学术论文，提取关键信息，并生成详细的解读报告。
 
 ## 功能特点
 
-### PDFMathTranslate模块（论文翻译）
+- 自动提取论文文本内容和图像
+- 识别和解析数学公式
+- 按章节分析论文内容
+- 生成详细的论文分析计划
+- 分析论文的各个关键部分（摘要、研究背景、方法、创新点、实验结果等）
+- 输出结构化的解读报告（支持JSON格式和Markdown格式）
+- 支持生成美观的Markdown格式分析报告，便于阅读和分享
+- 支持论文翻译功能，保留公式、图表和目录结构
 
-- **公式完整保留**：在翻译过程中精确识别和保留数学公式，避免公式被错误翻译
-- **图表结构保持**：保持原论文中的图表、目录和注释的完整性
-- **多语言支持**：支持多种语言之间的互译
-- **多种翻译服务**：支持多种翻译后端服务
-- **双语对照**：生成原文与译文对照的PDF文件，便于对比阅读
-- **多种使用方式**：提供命令行工具、交互式用户界面和Docker部署方式
-
-### Analyzer模块（论文解读）
-
-- **自动提取论文结构**：智能识别论文的章节结构和内容组织
-- **公式识别与解读**：提取并解释论文中的数学公式
-- **图像提取与分析**：识别论文中的图表并进行解读
-- **生成分析计划**：根据论文内容自动生成详细的分析计划
-- **深度内容解读**：分析论文的摘要、研究背景、方法、创新点、实验结果等关键部分
-- **多格式输出**：支持JSON和Markdown格式的解读报告输出
-
-## 系统架构
-
-```
-论文自动解读与翻译系统
-├── PDFMathTranslate（论文翻译模块）
-│   ├── 文本提取与处理
-│   ├── 公式识别与保护
-│   ├── 翻译引擎接口
-│   ├── PDF重构与渲染
-│   └── 用户界面
-└── Analyzer（论文解读模块）
-    ├── 论文章节提取
-    ├── 公式提取与解析
-    ├── 图像提取与分析
-    ├── 大模型分析接口
-    └── 报告生成器
-```
-
-## 安装指南
-
-### 环境要求
-
-- Python 3.10 或更高版本
-- 智谱AI API密钥（用于Analyzer模块）
-
-### 安装步骤
-
-1. 克隆项目仓库
+## 安装依赖
 
 ```bash
-git clone https://your-repository-url/Paper-Analyzer.git
-cd Paper-Analyzer
+pip install -r Analyzer/requirements.txt
 ```
 
-2. 安装依赖
+主要依赖包括：
 
-```bash
-# 安装Analyzer模块依赖
-cd Analyzer
-pip install -r requirements.txt
-
-# 安装PDFMathTranslate模块
-pip install pdf2zh
-```
+- zhipuai>=1.0.7
+- PyMuPDF>=1.22.5
+- PyPDF2>=3.0.0
+- argparse>=1.4.0
+- logging>=0.5.1.2
+- tqdm>=4.66.1
 
 ## 使用方法
 
-### PDFMathTranslate模块（论文翻译）
-
-#### 命令行使用
+### 使用命令行工具 (analyze.py)
 
 ```bash
-# 基本用法
-pdf2zh document.pdf
-
-# 指定翻译服务和语言
-pdf2zh document.pdf --backend openai --target zh-cn
+python Analyzer/analyze.py --api_key "your_zhipu_api_key" --pdf "path/to/your/paper.pdf" --output "output_directory" --mode "step_by_step"
 ```
 
-#### 图形界面使用
+或者设置环境变量：
 
 ```bash
-pdf2zh --gui
+set ZHIPU_API_KEY=your_zhipu_api_key
+python Analyzer/analyze.py --pdf "path/to/your/paper.pdf" --output "output_directory"
 ```
 
-### Analyzer模块（论文解读）
+#### 命令行参数说明
 
-#### 命令行使用
+- `--api_key`: 智谱AI的API密钥（如果不提供，将尝试从环境变量ZHIPU_API_KEY获取）
+- `--model`: 使用的模型名称，默认为glm-4-flash
+- `--pdf`: 论文文件路径，默认为Data/DDPM.pdf
+- `--output`: 分析结果输出目录，默认为Result/[文件名]_[分析模式]
+- `--mode`: 分析模式，可选值：
+  - `comprehensive`: 使用综合提示词一次性分析论文
+  - `step_by_step`: 分步骤详细分析论文（默认）
+  - `both`: 同时使用两种方式分析
+- `--use_sections`: 是否使用章节提取功能进行分析，默认为True，可提高分析精度
 
-```bash
-cd Analyzer
-python analyze.py --api_key "your_zhipu_api_key" --output "analysis_result.json" [--markdown]
-```
-
-#### 在代码中使用
+### 在自己的代码中使用 (paper_analyzer.py)
 
 ```python
-from paper_analyzer import PaperAnalyzer
+from Analyzer.paper_analyzer import PaperAnalyzer
 
 # 初始化分析器
-analyzer = PaperAnalyzer(api_key="your_zhipu_api_key", model="glm-4-flash")
+analyzer = PaperAnalyzer(
+    api_key="your_zhipu_api_key",  # 智谱AI的API密钥
+    model="glm-4-flash",  # 使用的模型名称，默认为glm-4-flash
+    enable_formula_extraction=True,  # 是否启用公式提取功能，默认为True
+    enable_image_extraction=True,  # 是否启用图像提取功能，默认为True
+    multimodal_model="glm-4v-flash"  # 多模态模型名称，默认为glm-4v-flash
+)
 
 # 分析论文
-result = analyzer.analyze_full_paper("path/to/your/paper.pdf", "output.json")
+result, markdown_content = analyzer.analyze_full_paper(
+    pdf_path="path/to/your/paper.pdf",  # PDF文件路径
+    output_dir="output_directory",  # 分析结果输出路径，默认为None（不保存）
+    use_comprehensive_prompt=False,  # 是否使用综合提示词一次性分析论文，默认为False
+    use_sections=True,  # 是否使用章节分析，默认为True
+    enable_multimodal=True  # 是否启用多模态分析，默认为True
+)
 
 # 使用分析结果
 print(result["analysis_results"]["摘要解读"])
 ```
 
-## 输出示例
+## 分析结果格式
 
-### 翻译输出
+工具支持两种输出格式：
 
-翻译模块会生成双语对照的PDF文件，保留原论文的格式和公式。
+### JSON格式
 
-### 解读输出
+分析结果以JSON格式保存，包含以下主要部分：
 
-解读模块支持两种输出格式：
+- `paper_path`: 论文文件路径
+- `analysis_plan`: 论文分析计划
+- `analysis_results`: 各部分的分析结果
+  - 基本信息
+  - 摘要解读
+  - 研究背景
+  - 研究方法
+  - 创新点
+  - 实验结果
+  - 结论
 
-#### JSON格式
+## 论文翻译功能
 
-```json
-{
-  "paper_path": "example.pdf",
-  "analysis_plan": { ... },
-  "analysis_results": {
-    "基本信息": { ... },
-    "摘要解读": "...",
-    "研究背景": "...",
-    "研究方法": "...",
-    "创新点": [ ... ],
-    "实验结果": { ... },
-    "结论": "..."
-  }
-}
+本工具还集成了强大的论文翻译功能，可以将PDF格式的学术论文翻译成多种语言，同时保留公式、图表和目录结构。
+
+### 使用命令行工具 (main.py)
+
+```bash
+python PDFMathTranslate/pdf2zh/main.py "path/to/your/paper.pdf" --service "zhipu" --output "output_directory"
 ```
 
-#### Markdown格式
+或者翻译整个目录中的所有PDF文件：
 
-生成结构化的Markdown报告，包含论文的各个部分的详细解读，便于阅读和分享。
+```bash
+python PDFMathTranslate/pdf2zh/main.py "path/to/your/directory" --dir --service "zhipu" --output "output_directory"
+```
 
-## 示例与演示
+### 命令行参数说明
 
-项目包含示例论文和对应的解读结果，位于`Data`和`Result`目录：
+- `files`: 一个或多个PDF文件路径
+- `--service`, `-s`: 使用的翻译服务，默认为"zhipu"，支持多种翻译服务
+- `--output`, `-o`: 输出目录，默认为Result/
+- `--lang-in`, `-li`: 源语言代码，默认为"en"(英语)
+- `--lang-out`, `-lo`: 目标语言代码，默认为"zh"(中文)
+- `--pages`, `-p`: 要解析的页码列表，例如"1,3,5-7"
+- `--thread`, `-t`: 执行翻译的线程数，默认为4
+- `--dir`: 翻译整个目录中的所有PDF文件
+- `--interactive`, `-i`: 启用交互式GUI界面
+- `--compatible`, `-cp`: 将PDF文件转换为PDF/A格式以提高兼容性
+- `--prompt`: 用户自定义提示词文件路径
+- `--babeldoc`: 使用实验性后端babeldoc
+- `--ignore-cache`: 忽略缓存并强制重新翻译
 
-- `Data/example.pdf`：示例论文
-- `Result/example_step_by_step/`：包含示例论文的分析计划、分析结果和Markdown报告
+### 支持的翻译服务
+
+工具支持多种翻译服务，包括但不限于（目前仅支持智谱）：
+
+- 智谱AI (zhipu)
+- OpenAI
+- Azure OpenAI
+- Google
+- DeepL
+- Bing
+- Ollama
+- ModelScope
+- Gemini
+- Tencent
+- Xinference
+- Argos
+- Grok
+- Groq
+- Deepseek
+- 等多种服务
+
+### 交互式GUI界面
+
+可以通过以下命令启动交互式GUI界面：
+
+```bash
+python PDFMathTranslate/pdf2zh/main.py --interactive
+```
+
+通过GUI界面，您可以更方便地选择文件、设置翻译参数并查看翻译结果。
+
+- 等等
+- `extracted_images`: 提取的图像路径列表
+- `image_captions`: 图像标题信息
+
+### Markdown格式
+
+工具会额外生成一个Markdown格式的解读报告，文件名为 `analysis_result.md`。Markdown报告具有以下特点：
+
+- 结构清晰，便于阅读和分享
+- 自动处理JSON内容的格式化
+- 支持多级标题和章节组织
+- 保持与JSON输出相同的分析深度和内容质量
+
+## 输出目录结构
+
+当使用 `analyze.py`进行分析时，会在指定的输出目录生成以下文件：
+
+```
+output_directory/
+├── analysis_plan.json       # 论文分析计划
+├── analysis_result.json     # 分析结果（JSON格式）
+├── analysis_result.md       # 分析结果（Markdown格式）
+├── paper_sections.json      # 提取的论文章节信息
+└── images/                  # 提取的图像目录
+    ├── image_1.jpg
+    ├── image_2.jpg
+    └── ...
+```
 
 ## 注意事项
 
-- PDFMathTranslate模块需要网络连接以访问翻译服务
-- Analyzer模块需要有效的智谱AI API密钥
+- 需要有效的智谱AI API密钥
 - 处理大型论文时可能需要较长时间
 - 分析结果的质量取决于智谱AI模型的能力
-
-## 贡献指南
-
-欢迎对项目进行贡献！您可以通过以下方式参与：
-
-1. 提交Bug报告或功能请求
-2. 改进代码和文档
-3. 添加新的翻译后端或分析功能
-
-## 许可证
-
-本项目采用MIT许可证。详情请参阅LICENSE文件。
-
-## 致谢
-
-- 感谢智谱AI提供的大模型支持
-- 感谢所有开源库的贡献者
+- 公式提取和图像提取功能可能受PDF格式和质量影响

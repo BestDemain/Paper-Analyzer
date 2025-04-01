@@ -32,7 +32,7 @@ def main():
     analyzer = PaperAnalyzer(api_key=api_key, model=args.model)
     
     # 确定PDF文件路径
-    pdf_path = args.pdf or os.path.join(os.path.dirname(os.path.abspath(__file__)), "../Data/example.pdf")
+    pdf_path = args.pdf or os.path.join(os.path.dirname(os.path.abspath(__file__)), "../Data/DDPM.pdf")
     file_name, _ = os.path.splitext(os.path.basename(pdf_path))
     print(f"开始分析论文: {pdf_path}")
     print(f"分析模式: {args.mode}")
