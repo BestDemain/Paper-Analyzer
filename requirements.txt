@@ -1,0 +1,42 @@
+# Paper Analyzer Project Requirements
+# This file combines dependencies from all subprojects
+
+# Core dependencies
+PyMuPDF>=1.24.9,<=1.24.14  # Compatible version for all subprojects
+pdfminer.six>=20231228  # Latest version compatible with all subprojects
+numpy>=1.21.6,<2.0.0  # Version range from MinerU
+tqdm>=4.66.1
+argparse>=1.4.0
+logging>=0.5.1.2
+
+# AI and ML dependencies
+zhipuai>=1.0.7  # From Analyzer
+torch>=2.2.2  # From MinerU
+transformers  # From MinerU
+scikit-learn>=1.0.2  # From MinerU
+
+# PDF processing
+PyPDF2>=3.0.0  # From Analyzer
+
+# Image processing
+Pillow>=9.0.0  # From Analyzer
+opencv-python>=4.5.0  # From Analyzer
+
+# Utilities
+loguru>=0.6.0  # From MinerU
+pydantic>=2.7.2  # From MinerU
+click>=8.1.7  # From MinerU
+fast-langdetect>=0.2.3,<0.3.0  # From MinerU
+Brotli>=1.1.0  # From MinerU
+boto3>=1.28.43  # From MinerU
+
+# Optional dependencies (uncomment if needed)
+# requests  # From PDFMathTranslate
+# tenacity  # From PDFMathTranslate
+# openai  # From PDFMathTranslate
+# gradio  # From PDFMathTranslate
+# huggingface_hub  # From PDFMathTranslate
+# onnx  # From PDFMathTranslate
+# onnxruntime  # From PDFMathTranslate
+# pikepdf  # From PDFMathTranslate
+# rich  # From PDFMathTranslate

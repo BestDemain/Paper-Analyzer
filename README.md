@@ -16,7 +16,13 @@
 ## 安装依赖
 
 ```bash
-pip install -r Analyzer/requirements.txt
+conda create -n AIPaper python==3.12
+conda activate AIPaper
+git clone https://github.com/BestDemain/Paper-Analyzer.git
+cd Paper-Analyzer
+pip install -r requirements.txt
+cd PDFMathTranslate
+pip install -e .
 ```
 
 主要依赖包括：
