@@ -13,6 +13,20 @@
 - 支持生成美观的Markdown格式分析报告，便于阅读和分享
 - 支持论文翻译功能，保留公式、图表和目录结构
 
+## 效果预览
+
+### 翻译效果
+
+![png](demo/翻译效果.png)
+
+### 解读过程
+
+![png](demo/解读过程.png)
+
+### 解读效果
+
+以[DDPM](Result\DDPM_step_by_step\analysis_result.md)为例进行解读
+
 ## 安装依赖
 
 ```bash
@@ -21,7 +35,7 @@ conda activate AIPaper
 git clone https://github.com/BestDemain/Paper-Analyzer.git
 cd Paper-Analyzer
 pip install -r requirements.txt
-cd PDFMathTranslate
+cd ../PDFMathTranslate
 pip install -e .
 ```
 
