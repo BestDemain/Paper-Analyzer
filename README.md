@@ -25,7 +25,7 @@
 
 ### 解读效果
 
-以[DDPM](Result\DDPM_step_by_step\analysis_result.md)为例进行解读
+以[DDPM](Result/DDPM_step_by_step/analysis_result.md)为例进行解读
 
 ## 安装依赖
 
